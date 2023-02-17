@@ -1,0 +1,20 @@
+const mongoose = require("mongoose")
+const luxon = require("luxon")
+
+const Schema = mongoose.Schema
+
+const PostSchema = new Schema({
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    image: { data: Buffer, contentType: String },
+    date: { type: Date, required: true },
+}, { versionKey: false })
+
+PostSchema.virtual("url").get(function () {
+    return `/blog/${this._id}`
+})
+PostSchema.virtual("formattedDate").get(function () {
+    return `${luxon.DateTime.fromJSDate(this.date).toLocaleString(luxon.DateTime.DATE_FULL)} ${luxon.DateTime.fromJSDate(this.date).toLocaleString(luxon.DateTime.TIME_24_SIMPLE)}`
+})
+
+module.exports = mongoose.model("Post", PostSchema, "posts")

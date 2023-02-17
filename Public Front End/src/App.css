@@ -1,0 +1,40 @@
+.posts {
+  color: #111827;
+  display: grid;
+  grid-template-columns: 23% 23% 23% 23%;
+  row-gap: 1rem;
+  align-items: center;
+  align-self: center;
+  justify-content: space-around;
+  height: 100vh;
+}
+
+.post {
+  background-color: white;
+  box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+
+.post-date {
+  color: #4b5563;
+  margin-top: -1.25rem;
+}
+
+.post-text {
+  margin-top: 1.25rem;
+}
+
+.post-banner {
+  width: inherit;
+}
+
+.post>*:not(img) {
+  padding-left: 10px;
+}
+
+.rectangle {
+  box-sizing: border-box;
+  background-color: #0ea5e9;
+  width: 100%;
+  height: 0.2rem;
+}
