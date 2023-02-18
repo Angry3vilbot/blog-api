@@ -1,5 +1,5 @@
 {
-  "name": "blog-api",
+  "name": "blog-private-page",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,12 +10,9 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/luxon": "^3.2.0",
-    "@types/node": "^18.14.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react-swc": "^3.0.0",

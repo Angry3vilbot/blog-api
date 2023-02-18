@@ -1,11 +1,31 @@
 p {
-    color: #4b5563;
+    color: #111827;
+}
+
+.blogpost {
+    display: flex;
+    flex-direction: column;
 }
 
 .blogpost h2 {
     color: #111827;
+    text-align: center;
 }
 
 .blogpost .date {
     color: #4b5563;
+    text-align: center;
+}
+
+.blogpost img {
+    height: 15rem;
+    width: 25rem;
+    align-self: center;
+}
+
+.blogpost .content {
+    width: 80%;
+    align-self: center;
+    line-height: 2rem;
+    white-space: pre-wrap;
 }

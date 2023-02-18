@@ -16,5 +16,11 @@ PostSchema.virtual("url").get(function () {
 PostSchema.virtual("formattedDate").get(function () {
     return `${luxon.DateTime.fromJSDate(this.date).toLocaleString(luxon.DateTime.DATE_FULL)} ${luxon.DateTime.fromJSDate(this.date).toLocaleString(luxon.DateTime.TIME_24_SIMPLE)}`
 })
+PostSchema.virtual("imageBuffer").get(function () {
+    if(this.image.data) {
+        return this.image.data.toString('base64')
+    }
+    return null
+})
 
 module.exports = mongoose.model("Post", PostSchema, "posts")

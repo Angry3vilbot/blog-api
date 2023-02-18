@@ -32,6 +32,12 @@
   padding-left: 10px;
 }
 
+.post img {
+  height: 12.5rem;
+  object-fit: cover;
+  object-position: center;
+}
+
 .rectangle {
   box-sizing: border-box;
   background-color: #0ea5e9;

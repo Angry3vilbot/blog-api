@@ -3,6 +3,20 @@ const router = express.Router();
 const mongoose = require('mongoose')
 const PostModel = require('../models/post')
 const async = require('async')
+const multer = require('multer')
+const fs = require('fs');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '/uploads/'))
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${file.fieldname}-${Date.now()}`)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 // GET help message.
 router.get('/', (req, res, next) => {
@@ -65,6 +79,23 @@ router.post('/blogs/test', async (req, res, next) => {
       console.error(err)
     }
   })
+})
+
+// POST new post {EXPERIMENTAL!}
+router.post('/', upload.single('imageUpload'), (req, res) => {
+  let imageData = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename))
+  let imageType = req.file.mimetype
+
+  const blogPost = new PostModel({
+    title: req.body.title,
+    content: req.body.content,
+    image: {
+      data: imageData,
+      contentType: imageType,
+    },
+    date: new Date()
+  })
+  blogPost.save()
 })
 
 module.exports = router;

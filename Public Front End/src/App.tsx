@@ -13,27 +13,41 @@ function App() {
           method: 'GET',
         })
       ).json()
-
       setPosts(data)
-      console.log(data)
     }
-
     fetchData()
   }, [])
 
   function generatePosts() {
+    interface image {
+      contentType: string
+    }
     let postElementArray: Array<JSX.Element> = []
     if(posts.length > 0) {
       for(const i in posts) {
-          postElementArray.push(
-            <div className='post' key={i}>
-              <div className='rectangle'></div>
-              <img className='post-banner' src={posts[i].image || banner} alt="Banner Image" />
-              <h2><Link to={posts[i].url}>{posts[i].title}</Link></h2>
-              <p className='post-date'>{posts[i].formattedDate}</p>
-              <p>{posts[i].content.slice(0, 150).trim()}...</p>
-            </div>
-          )
+          let image: image = posts[i].image
+          if(!image) {
+            postElementArray.push(
+              <div className='post' key={i}>
+                <div className='rectangle'></div>
+                <img className='post-banner' src={banner} alt="Banner Image" />
+                <h2><Link to={posts[i].url}>{posts[i].title}</Link></h2>
+                <p className='post-date'>{posts[i].formattedDate}</p>
+                <p>{posts[i].content.slice(0, 150).trim()}...</p>
+              </div>
+            )
+          } else {
+            postElementArray.push(
+              <div className='post' key={i}>
+                <div className='rectangle'></div>
+                <img className='post-banner' src={`data:${image.contentType};base64,
+                ${posts[i].imageBuffer}`} alt="Banner Image" />
+                <h2><Link to={posts[i].url}>{posts[i].title}</Link></h2>
+                <p className='post-date'>{posts[i].formattedDate}</p>
+                <p>{posts[i].content.slice(0, 150).trim()}...</p>
+              </div>
+            )
+          }
       }
     }
     return postElementArray
