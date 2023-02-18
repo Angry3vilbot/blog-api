@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import banner from './assets/banner-placeholder.webp'
+import banner from '../assets/banner-placeholder.webp'
 import { Link } from "react-router-dom"
-import './App.css'
+import '../styles/App.css'
 
 function App() {
   const [posts, setPosts] = useState<any[]>([])
@@ -28,7 +28,7 @@ function App() {
           let image: image = posts[i].image
           if(!image) {
             postElementArray.push(
-              <div className='post' key={i}>
+              <div className='post' key={posts[i].date}>
                 <div className='rectangle'></div>
                 <img className='post-banner' src={banner} alt="Banner Image" />
                 <h2><Link to={posts[i].url}>{posts[i].title}</Link></h2>
@@ -49,6 +49,12 @@ function App() {
             )
           }
       }
+      postElementArray.sort((a, b) => {
+        if (a.key! > b.key!) {
+          return -1
+        }
+        return 1
+      })
     }
     return postElementArray
   }

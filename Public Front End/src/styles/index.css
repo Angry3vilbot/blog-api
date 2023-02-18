@@ -34,7 +34,7 @@ a::after {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #0087ca;
+  background-color:#0ea5e9;
   transform-origin: top;
   transition: transform 0.25s ease-out;
 }
