@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import placeholder from '../assets/banner-placeholder.webp'
 import '../styles/Blog.css'
@@ -50,6 +50,36 @@ function Blog() {
         return `${DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL)} ${DateTime.fromJSDate(date).toLocaleString(DateTime.TIME_24_SIMPLE)}`
     }
 
+    async function submitCommentForm(e:FormEvent) {
+        e.preventDefault()
+        const date = new Date()
+        const target = e.target as HTMLFormElement
+        await fetch(`http://localhost:3000/blog/${post._id}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                username: target.username.value,
+                comment: target.comment.value
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+            setPost({
+                _id: post._id,
+                title: post.title,
+                content: post.content,
+                formattedDate: post.formattedDate,
+                image: post.image,
+                imageBuffer: post.imageBuffer,
+                comments: [...post.comments, {
+                    username: target.username.value,
+                    comment: target.comment.value,
+                    date: date
+                }]
+            })
+        })
+    }
+
   return (
     <div className='Blog'>
         <section className='blogpost'>
@@ -60,7 +90,7 @@ function Blog() {
         </section>
         <section className='comments'>
             <h3>{post.comments.length} Comments</h3>
-            <form action={`http://localhost:3000/blog/${post._id}`} method="post">
+            <form action={`http://localhost:3000/blog/${post._id}`} method="post" onSubmit={submitCommentForm}>
                 <label htmlFor="username">Username</label>
                 <input type="text" name='username' id='username' required />
                 <label htmlFor="comment">Comment</label>

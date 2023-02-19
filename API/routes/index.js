@@ -101,6 +101,7 @@ router.post('/', upload.single('imageUpload'), (req, res) => {
 
 // POST new comment.
 router.post('/blog/:id', async (req, res, next) => {
+  console.log(req.body)
   const comment = {
     username: req.body.username,
     comment: req.body.comment,
@@ -109,6 +110,7 @@ router.post('/blog/:id', async (req, res, next) => {
 
   await PostModel.findByIdAndUpdate(req.params.id, { $push: { comments: comment } })
   .catch(err => next(err))
+  res.json({success: true})
 })
 
 module.exports = router;
