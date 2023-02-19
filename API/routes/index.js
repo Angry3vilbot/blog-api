@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const PostModel = require('../models/post')
-const CommentModel = require('../models/comment')
 const async = require('async')
 const multer = require('multer')
 const fs = require('fs');
@@ -44,7 +43,7 @@ router.get('/blog/:id', async (req, res) => {
   }
 })
 
-// POST pre-made blogs for testing purposes
+// POST pre-made blogs for testing purposes.
 router.post('/blogs/test', async (req, res) => {
 
   const postA = new PostModel({
@@ -82,7 +81,7 @@ router.post('/blogs/test', async (req, res) => {
   })
 })
 
-// POST new post
+// POST new post.
 router.post('/', upload.single('imageUpload'), (req, res) => {
   let imageData = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename))
   let imageType = req.file.mimetype
@@ -100,20 +99,16 @@ router.post('/', upload.single('imageUpload'), (req, res) => {
   blogPost.save()
 })
 
-// POST new comment
-router.post('/blog/:id', (req, res, next) => {
-  const comment = new CommentModel({
+// POST new comment.
+router.post('/blog/:id', async (req, res, next) => {
+  const comment = {
     username: req.body.username,
     comment: req.body.comment,
     date: new Date()
-  })
+  }
 
-  comment.save()
-  .then(async (comment) => {
-    await PostModel.findByIdAndUpdate(req.params.id, { $push: { comments: comment._id } })
-  })
+  await PostModel.findByIdAndUpdate(req.params.id, { $push: { comments: comment } })
   .catch(err => next(err))
-  .finally(res.sendStatus(200))
 })
 
 module.exports = router;

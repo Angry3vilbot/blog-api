@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import placeholder from '../assets/banner-placeholder.webp'
 import '../styles/Blog.css'
+import { DateTime } from 'luxon'
 
 function Blog() {
     interface BlogPost {
@@ -11,9 +12,14 @@ function Blog() {
         formattedDate: string,
         image: any,
         imageBuffer: string,
-        comments: Array<String>
+        comments: Array<BlogComment>
     }
-    const [post, setPost] = useState<BlogPost>({_id: '', title: '', content: '', formattedDate: '', image: {}, imageBuffer: '', comments: ['']})
+    interface BlogComment {
+        username: string,
+        comment: string,
+        date: Date
+    }
+    const [post, setPost] = useState<BlogPost>({_id: '', title: '', content: '', formattedDate: '', image: {}, imageBuffer: '', comments: []})
     const { blogId } = useParams()
 
     useEffect(() => {
@@ -23,7 +29,6 @@ function Blog() {
                 method: 'GET',
                 })
             ).json()
-            console.log(data)
             setPost(data)
         }   
         fetchData()
@@ -38,6 +43,11 @@ function Blog() {
             return `data:${post.image.contentType};base64,${post.imageBuffer}`
         }
         return placeholder
+    }
+
+    function formatCommentDate(date: Date) {
+        date = new Date(date)
+        return `${DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL)} ${DateTime.fromJSDate(date).toLocaleString(DateTime.TIME_24_SIMPLE)}`
     }
 
   return (
@@ -57,6 +67,13 @@ function Blog() {
                 <textarea name="comment" id="comment" required></textarea>
                 <button type="submit">Submit</button>
             </form>
+            {post.comments.map((comment) => (
+                <div className='blog-comment' key={Math.random()}>
+                    <h4>{comment.username}</h4>
+                    <p>{comment.comment}</p>
+                    <p className='blog-comment-date'>{formatCommentDate(comment.date)}</p>
+                </div>
+            ))}
         </section>
     </div>
   )
