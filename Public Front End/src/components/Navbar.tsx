@@ -15,8 +15,8 @@ function Navbar() {
     } 
     return (
         <nav>
-            <div onMouseEnter={changeImage} onMouseLeave={changeImage}>
-                <Link to='/'>
+            <div>
+                <Link to='/' onMouseEnter={changeImage} onMouseLeave={changeImage}>
                     <img ref={logoImage} src={logoIcon} alt="logo" />
                     <h1>Angry3vilbot</h1>
                 </Link>

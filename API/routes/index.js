@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const PostModel = require('../models/post')
+const CommentModel = require('../models/comment')
 const async = require('async')
 const multer = require('multer')
 const fs = require('fs');
@@ -24,7 +25,7 @@ router.get('/', (req, res, next) => {
 });
 
 // GET all blog posts.
-router.get('/blogs', async (req, res, next) => {
+router.get('/blogs', async (req, res) => {
   try {
     const posts = await PostModel.find()
     res.json(posts)
@@ -34,7 +35,7 @@ router.get('/blogs', async (req, res, next) => {
 })
 
 // GET blog post by _id.
-router.get('/blog/:id', async (req, res, next) => {
+router.get('/blog/:id', async (req, res) => {
   try {
     const post = await PostModel.findById(req.params.id)
     res.json(post)
@@ -44,7 +45,7 @@ router.get('/blog/:id', async (req, res, next) => {
 })
 
 // POST pre-made blogs for testing purposes
-router.post('/blogs/test', async (req, res, next) => {
+router.post('/blogs/test', async (req, res) => {
 
   const postA = new PostModel({
     title: "This is post number one",
@@ -81,7 +82,7 @@ router.post('/blogs/test', async (req, res, next) => {
   })
 })
 
-// POST new post {EXPERIMENTAL!}
+// POST new post
 router.post('/', upload.single('imageUpload'), (req, res) => {
   let imageData = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename))
   let imageType = req.file.mimetype
@@ -93,9 +94,26 @@ router.post('/', upload.single('imageUpload'), (req, res) => {
       data: imageData,
       contentType: imageType,
     },
-    date: new Date()
+    date: new Date(),
+    comments: []
   })
   blogPost.save()
+})
+
+// POST new comment
+router.post('/blog/:id', (req, res, next) => {
+  const comment = new CommentModel({
+    username: req.body.username,
+    comment: req.body.comment,
+    date: new Date()
+  })
+
+  comment.save()
+  .then(async (comment) => {
+    await PostModel.findByIdAndUpdate(req.params.id, { $push: { comments: comment._id } })
+  })
+  .catch(err => next(err))
+  .finally(res.sendStatus(200))
 })
 
 module.exports = router;

@@ -16,6 +16,7 @@ function App() {
       setPosts(data)
     }
     fetchData()
+    document.title = `Angry3vilbot's Blog`
   }, [])
 
   function generatePosts() {

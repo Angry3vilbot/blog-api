@@ -1,3 +1,7 @@
+a {
+  width: fit-content;
+}
+
 .posts {
   color: #111827;
   display: grid;
