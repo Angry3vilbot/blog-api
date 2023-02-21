@@ -92,9 +92,9 @@ function Blog() {
             <h3>{post.comments.length} Comments</h3>
             <form action={`http://localhost:3000/blog/${post._id}`} method="post" onSubmit={submitCommentForm}>
                 <label htmlFor="username">Username</label>
-                <input type="text" name='username' id='username' required />
+                <input type="text" name='username' id='username' maxLength={30} required />
                 <label htmlFor="comment">Comment</label>
-                <textarea name="comment" id="comment" required></textarea>
+                <textarea name="comment" id="comment" maxLength={100} required></textarea>
                 <button type="submit">Submit</button>
             </form>
             {post.comments.map((comment) => (
