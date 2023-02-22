@@ -50,6 +50,17 @@ function Blog() {
         return `${DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL)} ${DateTime.fromJSDate(date).toLocaleString(DateTime.TIME_24_SIMPLE)}`
     }
 
+    function generateComments(comments: Array<BlogComment>) {
+        comments.sort((a, b) => a.date > b.date ? -1 : 1)
+        return comments.map((comment) => (
+            <div className='blog-comment' key={Math.random()}>
+                <h4>{comment.username}</h4>
+                <p>{comment.comment}</p>
+                <p className='blog-comment-date'>{formatCommentDate(comment.date)}</p>
+            </div>
+        ))
+    }
+
     async function submitCommentForm(e:FormEvent) {
         e.preventDefault()
         const date = new Date()
@@ -91,19 +102,19 @@ function Blog() {
         <section className='comments'>
             <h3>{post.comments.length} Comments</h3>
             <form action={`http://localhost:3000/blog/${post._id}`} method="post" onSubmit={submitCommentForm}>
-                <label htmlFor="username">Username</label>
-                <input type="text" name='username' id='username' maxLength={30} required />
-                <label htmlFor="comment">Comment</label>
-                <textarea name="comment" id="comment" maxLength={100} required></textarea>
+                <fieldset>
+                    <label htmlFor="username">Username</label>
+                    <input type="text" name='username' id='username' maxLength={30} required />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="comment">Comment</label>
+                    <textarea name="comment" id="comment" maxLength={100} required></textarea>
+                </fieldset>
                 <button type="submit">Submit</button>
             </form>
-            {post.comments.map((comment) => (
-                <div className='blog-comment' key={Math.random()}>
-                    <h4>{comment.username}</h4>
-                    <p>{comment.comment}</p>
-                    <p className='blog-comment-date'>{formatCommentDate(comment.date)}</p>
-                </div>
-            ))}
+            <div className='blog-comment-container'>
+                {generateComments(post.comments)}
+            </div>
         </section>
     </div>
   )

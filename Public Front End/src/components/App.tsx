@@ -19,6 +19,13 @@ function App() {
     document.title = `Angry3vilbot's Blog`
   }, [])
 
+  function checkContentLength(content: string) {
+    if(content.split('').length > 150) {
+      return <p>{content.slice(0, 150).trim()}...</p>
+    }
+    return <p>{content}</p>
+  }
+
   function generatePosts() {
     interface image {
       contentType: string
@@ -34,7 +41,7 @@ function App() {
                 <img className='post-banner' src={banner} alt="Banner Image" />
                 <h2><Link to={posts[i].url}>{posts[i].title}</Link></h2>
                 <p className='post-date'>{posts[i].formattedDate}</p>
-                <p>{posts[i].content.slice(0, 150).trim()}...</p>
+                {checkContentLength(posts[i].content)}
               </div>
             )
           } else {
@@ -45,7 +52,7 @@ function App() {
                 ${posts[i].imageBuffer}`} alt="Banner Image" />
                 <h2><Link to={posts[i].url}>{posts[i].title}</Link></h2>
                 <p className='post-date'>{posts[i].formattedDate}</p>
-                <p>{posts[i].content.slice(0, 150).trim()}...</p>
+                {checkContentLength(posts[i].content)}
               </div>
             )
           }
