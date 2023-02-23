@@ -104,11 +104,11 @@ function Blog() {
             <form action={`http://localhost:3000/blog/${post._id}`} method="post" onSubmit={submitCommentForm}>
                 <fieldset>
                     <label htmlFor="username">Username</label>
-                    <input type="text" name='username' id='username' maxLength={30} required />
+                    <input type="text" name='username' id='username' minLength={10} maxLength={30} required />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="comment">Comment</label>
-                    <textarea name="comment" id="comment" maxLength={100} required></textarea>
+                    <textarea name="comment" id="comment" minLength={10} maxLength={100} required></textarea>
                 </fieldset>
                 <button type="submit">Submit</button>
             </form>
