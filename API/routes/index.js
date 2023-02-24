@@ -23,8 +23,18 @@ router.get('/', (req, res, next) => {
   res.send(`This is an API that allows you to get my, Angry3vilbot's, blog posts.\n In order to use it in your front end you will have to use the correct URIs. Here is the list of all of them: \n /blogs ———— Provides all blog posts as JSON \n /blog/:id ———— Provides a specific blog post by its _id \n`)
 });
 
-// GET all blog posts.
+// GET all non-hidden blog posts.
 router.get('/blogs', async (req, res) => {
+  try {
+    const posts = await PostModel.find({ isHidden: false })
+    res.json(posts)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+// GET all blog posts
+router.get('/blogs/admin', async (req, res) => {
   try {
     const posts = await PostModel.find()
     res.json(posts)
@@ -101,7 +111,6 @@ router.post('/', upload.single('imageUpload'), (req, res) => {
 
 // POST new comment.
 router.post('/blog/:id', async (req, res, next) => {
-  console.log(req.body)
   const comment = {
     username: req.body.username,
     comment: req.body.comment,
@@ -110,6 +119,21 @@ router.post('/blog/:id', async (req, res, next) => {
 
   await PostModel.findByIdAndUpdate(req.params.id, { $push: { comments: comment } })
   .catch(err => next(err))
+  res.json({success: true})
+})
+
+// POST deletion of a post
+router.post('/blog/:id/delete', async (req, res, next) => {
+  await PostModel.findByIdAndDelete(req.params.id)
+  .catch(err => next(err))
+  res.json({success: true})
+})
+
+// POST hidden status change.
+router.post('/blog/:id/hide', async (req, res, next) => {
+  let post = await PostModel.findById(req.params.id).catch(err => next(err))
+  await PostModel.findByIdAndUpdate(post._id, { $set: { isHidden: !post.isHidden } })
+  .catch((err) => next(err))
   res.json({success: true})
 })
 

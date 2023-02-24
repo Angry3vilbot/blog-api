@@ -8,7 +8,8 @@ const PostSchema = new Schema({
     content: { type: String, required: true },
     image: { data: Buffer, contentType: String },
     date: { type: Date, required: true },
-    comments: { type: Array }
+    comments: { type: Array },
+    isHidden: { type: Boolean }
 }, { versionKey: false })
 
 PostSchema.virtual("url").get(function () {
