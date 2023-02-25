@@ -1,3 +1,17 @@
+h2 {
+  text-align: center;
+}
+
+.new-post::after {
+  display: none;
+}
+
+.new-post {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
 .posts {
   color: #111827;
   display: grid;

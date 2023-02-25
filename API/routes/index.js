@@ -104,7 +104,8 @@ router.post('/', upload.single('imageUpload'), (req, res) => {
       contentType: imageType,
     },
     date: new Date(),
-    comments: []
+    comments: [],
+    isHidden: false
   })
   blogPost.save()
 })

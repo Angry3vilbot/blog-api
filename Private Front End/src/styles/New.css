@@ -1,0 +1,22 @@
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+input:not([type=file]) {
+    width: 20rem;
+}
+
+textarea {
+    font: inherit;
+    width: 25rem;
+    height: 15rem;
+    resize: none;
+    word-wrap: break-word;
+}

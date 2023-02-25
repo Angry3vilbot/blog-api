@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import banner from '../assets/banner-placeholder.webp'
 import { Link } from 'react-router-dom'
 import '../styles/App.css'
@@ -139,6 +139,9 @@ function App() {
           <button onClick={cancelDeletion}>No, cancel</button>
         </div>
       </div>
+      <Link to={'/new'} className='new-post'>
+        <button>New Post</button>
+      </Link>
       <h2>All Posts</h2>
       <div className='posts'>
         {generatePosts()}
