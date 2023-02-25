@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import banner from '../assets/banner-placeholder.webp'
 import { Link } from 'react-router-dom'
 import '../styles/App.css'
@@ -6,6 +6,7 @@ import '../styles/App.css'
 function App() {
   const [posts, setPosts] = useState<any[]>([])
   const [deletionId, setDeletionId] = useState<String>('')
+  const deletionWarning = useRef<HTMLDivElement>(null)
 
   const fetchData = useCallback(async () => {
     const data = await (
@@ -25,13 +26,7 @@ function App() {
     target.innerHTML = 'Please Wait'
     target.setAttribute('disabled', '')
     await fetch(`http://localhost:3000/blog/${_id}/hide`, {
-      method: 'POST',
-      body: JSON.stringify({
-        _id: _id
-      }),
-      headers: {
-        'Content-Type': 'applications/json'
-      }
+      method: 'POST'
     }).then(async () => {
       await fetchData()
       target.removeAttribute('disabled')
@@ -40,6 +35,26 @@ function App() {
 
   function revealDeleteWarning(ev: React.MouseEvent, _id: String) {
     setDeletionId(_id)
+    deletionWarning.current!.classList.remove('hidden')
+  }
+
+  async function deletePost(ev: React.MouseEvent) {
+    const target = ev.currentTarget
+    target.innerHTML = 'Please Wait'
+    target.setAttribute('disabled', '')
+    await fetch(`http://localhost:3000/blog/${deletionId}/delete`, {
+      method: 'POST'
+    }).then(async () => {
+      await fetchData()
+      target.removeAttribute('disabled')
+      target.innerHTML = 'Yes, delete'
+      deletionWarning.current!.classList.add('hidden')
+    })
+  }
+  
+  function cancelDeletion() {
+    setDeletionId('')
+    deletionWarning.current!.classList.add('hidden')
   }
 
   function generatePosts() {
@@ -116,6 +131,14 @@ function App() {
 
   return (
     <div className="App">
+      <div className="deletion-warning hidden" ref={deletionWarning}>
+        <h4>Warning</h4>
+        <p>Are you sure you want to delete this post?</p>
+        <div className="btn-container">
+          <button onClick={deletePost}>Yes, delete</button>
+          <button onClick={cancelDeletion}>No, cancel</button>
+        </div>
+      </div>
       <h2>All Posts</h2>
       <div className='posts'>
         {generatePosts()}
