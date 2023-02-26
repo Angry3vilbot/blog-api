@@ -5,15 +5,18 @@ import '../styles/App.css'
 
 function App() {
   const [posts, setPosts] = useState<any[]>([])
+  const [loadingStatus, setLoadingStatus] = useState<Boolean>(false)
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingStatus(true)
       const data = await (
         await fetch('http://localhost:3000/blogs', {
           method: 'GET',
         })
       ).json()
       setPosts(data)
+      setLoadingStatus(false)
     }
     fetchData()
     document.title = `Angry3vilbot's Blog`
@@ -24,6 +27,16 @@ function App() {
       return <p>{content.slice(0, 150).trim()}...</p>
     }
     return <p>{content}</p>
+  }
+
+  function checkLoading() {
+    if(loadingStatus) {
+      return (
+        <div className='loading'>
+          <h3>Loading...</h3>
+        </div>
+      )
+    }
   }
 
   function generatePosts() {
@@ -70,6 +83,7 @@ function App() {
 return (
     <div className='App'>
       <section className='posts'>
+        {checkLoading()}
         {generatePosts()}
       </section>
     </div>

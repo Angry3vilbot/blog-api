@@ -93,21 +93,32 @@ router.post('/blogs/test', async (req, res) => {
 
 // POST new post.
 router.post('/', upload.single('imageUpload'), (req, res) => {
-  let imageData = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename))
-  let imageType = req.file.mimetype
+  if(req.file) {
+    let imageData = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename))
+    let imageType = req.file.mimetype
 
-  const blogPost = new PostModel({
-    title: req.body.title,
-    content: req.body.content,
-    image: {
-      data: imageData,
-      contentType: imageType,
-    },
-    date: new Date(),
-    comments: [],
-    isHidden: false
-  })
-  blogPost.save()
+    const blogPost = new PostModel({
+      title: req.body.title,
+      content: req.body.content,
+      image: {
+       data: imageData,
+        contentType: imageType,
+      },
+      date: new Date(),
+      comments: [],
+      isHidden: false
+    })
+    blogPost.save()
+  } else {
+    const blogPost = new PostModel({
+      title: req.body.title,
+      content: req.body.content,
+      date: new Date(),
+      comments: [],
+      isHidden: false
+    })
+    blogPost.save()
+  }
 })
 
 // POST new comment.

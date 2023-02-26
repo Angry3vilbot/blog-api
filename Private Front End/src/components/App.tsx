@@ -139,9 +139,11 @@ function App() {
           <button onClick={cancelDeletion}>No, cancel</button>
         </div>
       </div>
-      <Link to={'/new'} className='new-post'>
-        <button>New Post</button>
-      </Link>
+      <div className="new-post-container">
+        <Link to={'/new'} className='new-post'>
+          <button>New Post</button>
+        </Link>
+      </div>
       <h2>All Posts</h2>
       <div className='posts'>
         {generatePosts()}

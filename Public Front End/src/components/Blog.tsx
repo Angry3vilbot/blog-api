@@ -88,6 +88,8 @@ function Blog() {
                     date: date
                 }]
             })
+            target.username.value = ''
+            target.comment.value = ''
         })
     }
 

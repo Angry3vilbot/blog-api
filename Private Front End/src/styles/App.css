@@ -1,3 +1,7 @@
+a {
+  width: fit-content;
+}
+
 h2 {
   text-align: center;
 }
@@ -6,10 +10,11 @@ h2 {
   display: none;
 }
 
-.new-post {
+.new-post-container {
   display: flex;
   justify-content: center;
   padding-top: 2rem;
+  justify-self: center;
 }
 
 .posts {
@@ -31,7 +36,7 @@ h2 {
 }
 
 .post.hidden {
-  background-color: #ffffff55;
+  filter: grayscale(1);
 }
 
 .post-date {
