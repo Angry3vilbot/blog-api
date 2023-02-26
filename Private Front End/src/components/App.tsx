@@ -80,9 +80,9 @@ function App() {
                     }
                     return <button onClick={(ev) => changeHiddenStatus(ev, posts[i]._id)}>Unhide</button>
                   })()}
-                  <form action={`/${posts[i]._id}/edit`} method="get">
+                  <Link to={`/edit/${posts[i]._id}`}>
                     <button type="submit">Edit</button>
-                  </form>
+                  </Link>
                   <button onClick={(ev) => revealDeleteWarning(ev, posts[i]._id)}>Delete</button>
                 </div>
               </div>
@@ -103,9 +103,9 @@ function App() {
                     }
                     return <button onClick={(ev) => changeHiddenStatus(ev, posts[i]._id)}>Unhide</button>
                   })()}
-                  <form action={`/${posts[i]._id}/edit`} method="get">
+                  <Link to={`/edit/${posts[i]._id}`}>
                     <button type="submit">Edit</button>
-                  </form>
+                  </Link>
                   <button onClick={(ev) => revealDeleteWarning(ev, posts[i]._id)}>Delete</button>
                 </div>
               </div>

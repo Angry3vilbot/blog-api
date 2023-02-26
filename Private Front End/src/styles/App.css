@@ -20,8 +20,8 @@ h2 {
 .posts {
   color: #111827;
   display: grid;
-  grid-template-columns: 23% 23% 23% 23%;
-  row-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
   align-items: center;
   align-self: center;
   justify-content: space-around;
@@ -85,6 +85,10 @@ h2 {
   background-color: #6e7f87;
   box-shadow: inset 0 2px hsl(201, 10%, 55%), 0 2px 3px hsla(0, 0%, 0%, .2);
   color: white;
+}
+
+.post-buttons a::after {
+  display: none;
 }
 
 .deletion-warning {

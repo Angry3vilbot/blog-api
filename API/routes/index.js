@@ -101,7 +101,7 @@ router.post('/', upload.single('imageUpload'), (req, res) => {
       title: req.body.title,
       content: req.body.content,
       image: {
-       data: imageData,
+        data: imageData,
         contentType: imageType,
       },
       date: new Date(),
@@ -147,6 +147,31 @@ router.post('/blog/:id/hide', async (req, res, next) => {
   await PostModel.findByIdAndUpdate(post._id, { $set: { isHidden: !post.isHidden } })
   .catch((err) => next(err))
   res.json({success: true})
+})
+
+// POST edit of a post.
+router.post('/blog/:id/edit', upload.single('imageUpload'), async (req, res, next) => {
+  if(req.file) {
+    let imageData = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename))
+    let imageType = req.file.mimetype
+    let post = await PostModel.findById(req.params.id).catch(err => next(err))
+    await PostModel.findByIdAndUpdate(post._id, { $set: {
+      title: req.body.title || post.title,
+      content: req.body.content || post.title,
+      image: {
+        data: imageData,
+        contentType: imageType
+      }
+    } })
+    .catch((err) => next(err))
+  } else {
+    let post = await PostModel.findById(req.params.id).catch(err => next(err))
+    await PostModel.findByIdAndUpdate(post._id, { $set: {
+      title: req.body.title || post.title,
+      content: req.body.content || post.title,
+    } })
+    .catch((err) => next(err))
+  }
 })
 
 module.exports = router;

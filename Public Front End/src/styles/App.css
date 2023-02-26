@@ -18,12 +18,12 @@ a {
 .posts {
   color: #111827;
   display: grid;
-  grid-template-columns: 23% 23% 23% 23%;
-  row-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
   align-items: center;
-  align-self: center;
   justify-content: space-around;
-  height: 100vh;
+  height: 100%;
 }
 
 .post {

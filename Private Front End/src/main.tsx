@@ -5,6 +5,7 @@ import App from './components/App'
 import './styles/index.css'
 import New from './components/New'
 import Navbar from './components/Navbar'
+import Edit from './components/Edit'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <Routes>
         <Route path='/' element={<App/>}/>
         <Route path='/new' element={<New/>}/>
+        <Route path='/edit/:blogId' element={<Edit/>}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
